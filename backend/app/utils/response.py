@@ -1,7 +1,7 @@
 from flask import jsonify
 
 
-def success(data=None, message="success", code=0):
+def success(data=None, message="success", code=200):
     """
     On success response
     
@@ -17,7 +17,7 @@ def success(data=None, message="success", code=0):
     })
 
 
-def error(message="error", code=1, data=None):
+def error(message="error", code=400, data=None):
     """
     On error response
     
