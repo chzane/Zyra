@@ -1,0 +1,26 @@
+{
+  "name": "zyra",
+  "version": "1.0.0beta",
+  "description": "A personal AI assistant.",
+  "main": "dist/electron/main.js",
+  "scripts": {
+    "dev": "concurrently \"yarn dev:frontend\" \"yarn dev:electron\"",
+    "dev:frontend": "cd frontend && yarn dev",
+    "dev:electron": "tsc && wait-on http://localhost:5173 && electron .",
+    "build": "tsc"
+  },
+  "repository": "https://github.com/chzane/Zyra.git",
+  "author": "chzane <112529607+chzane@users.noreply.github.com>",
+  "license": "GPL-3.0 license",
+  "dependencies": {
+    "concurrently": "^9.2.1",
+    "electron": "^41.1.0",
+    "get-port": "^7.2.0",
+    "wait-on": "^9.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.2"
+  }
+}
