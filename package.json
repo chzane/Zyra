@@ -16,7 +16,8 @@
     "concurrently": "^9.2.1",
     "electron": "^41.1.0",
     "get-port": "^7.2.0",
-    "wait-on": "^9.0.4"
+    "wait-on": "^9.0.4",
+    "electron-log": "^4.4.1"
   },
   "devDependencies": {
     "@types/node": "^25.5.0",

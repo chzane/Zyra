@@ -241,3 +241,6 @@ $RECYCLE.BIN/
 # Python
 __pycache__/
 venv/
+.venv/
+
+logs

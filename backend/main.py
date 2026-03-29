@@ -6,6 +6,7 @@ app = create_app()
 
 if __name__ == "__main__":
     token = sys.argv[1] if len(sys.argv) > 1 else None
+    port = int(sys.argv[2]) if len(sys.argv) > 2 else 5000
     set_token(token)
     
-    app.run(debug=True)
+    app.run(host="127.0.0.1", debug=True, port=port)
