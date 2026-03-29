@@ -2,6 +2,7 @@ import os
 import time
 from config import ZyraConfig
 import platform
+import getpass
 import socket
 import psutil
 import datetime
@@ -38,7 +39,7 @@ class ZyraSystemInfo:
             self.storage_gb = None
             
         try:
-            self.username: str | None = os.getlogin()
+            self.username: str | None = getpass.getuser()
         except:
             self.username = None
             
@@ -46,6 +47,16 @@ class ZyraSystemInfo:
             self.cpu_name: str | None = platform.processor() or platform.machine()
         except:
             self.cpu_name = None
+            
+        try:
+            self.os: str | None = platform.system()
+        except:
+            self.os = None
+            
+        try:
+            self.arch: str | None = platform.machine()
+        except:
+            self.arch = None
 
     @property
     def uptime(self):
@@ -63,17 +74,23 @@ class ZyraSystemInfo:
         :return: System info dictionary
         """
         return {
-            "name": self.name,
-            "version": self.version,
-            "env": self.env,
-            "uptime": self.uptime,
-            "timezone": str(self.timezone),
-            "hostname": self.hostname,
-            "cpu_model": self.cpu_model,
-            "memory_gb": self.memory_gb,
-            "storage_gb": self.storage_gb,
-            "username": self.username,
-            "cpu_name": self.cpu_name
+            "zyra": {
+                "name": self.name,
+                "version": self.version,
+                "env": self.env,
+                "uptime": self.uptime,
+            },
+            "system": {
+                "os": self.os,
+                "arch": self.arch,
+                "timezone": str(self.timezone),
+                "cpu_model": self.cpu_model,
+                "cpu_name": self.cpu_name,
+                "memory_gb": self.memory_gb,
+                "storage_gb": self.storage_gb,
+                "username": self.username,
+                "hostname": self.hostname,
+            },
         }
 
 
