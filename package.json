@@ -14,10 +14,11 @@
   "license": "GPL-3.0 license",
   "dependencies": {
     "concurrently": "^9.2.1",
+    "dotenv": "^17.3.1",
     "electron": "^41.1.0",
+    "electron-log": "^4.4.1",
     "get-port": "^7.2.0",
-    "wait-on": "^9.0.4",
-    "electron-log": "^4.4.1"
+    "wait-on": "^9.0.4"
   },
   "devDependencies": {
     "@types/node": "^25.5.0",

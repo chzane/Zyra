@@ -6,16 +6,35 @@ let backendProcess: any;
 /**
  * Start the backend process.
  * @param AUTH_TOKEN The authentication token to use.
+ * @param PORT The port number to use.
  * @param IS_DEV Whether the application is running in development mode.
- * @param IS_WIN Whether the application is running on Windows.
+ * @param PLATFORM The platform of the application running.
  */
-export function startBackend(AUTH_TOKEN: string, PORT: number, IS_DEV: boolean, IS_WIN: boolean) {
+export function startBackend(AUTH_TOKEN: string, PORT: number, IS_DEV: boolean, PLATFORM: string) {
     if (IS_DEV) {
-        const pythonPath = IS_WIN
-            ? "backend\\.venv\\Scripts\\python.exe"
-            : "backend/.venv/bin/python";
+        let pythonPath: string;
+        switch (PLATFORM) {
+            case "win32":
+                pythonPath = "backend\\.venv\\Scripts\\python.exe";
+                break;
+            case "darwin":
+                pythonPath = "backend/.venv/bin/python";
+                break;
+            case "linux":
+                pythonPath = "backend/.venv/bin/python";
+                break;
+            default:
+                pythonPath = "backend/.venv/bin/python";
+                break;
+        }
 
-        backendProcess = spawn(pythonPath, ["backend/main.py", AUTH_TOKEN, PORT.toString()], {
+        backendProcess = spawn(
+            pythonPath, [
+            "backend/main.py",
+            AUTH_TOKEN,
+            PORT.toString(),
+            IS_DEV.toString()
+        ], {
             env: { ...process.env }
         });
 

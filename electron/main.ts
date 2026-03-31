@@ -3,12 +3,13 @@ import log from "./core/logger";
 import { createAuthToken } from "./core/auth";
 import { startBackend, stopBackend, randomPort } from "./core/backend";
 import { createWindow } from "./core/window";
-import { IS_DEV, IS_WIN } from "./config";
+import { IS_DEV, PLATFORM } from "./config";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 let AUTH_TOKEN: string;
 let BACKEND_PORT: number;
-
-log.info("Application starting...");
 
 if (IS_DEV && process.env.ZYRA_AUTH_TOKEN) {
     AUTH_TOKEN = process.env.ZYRA_AUTH_TOKEN;
@@ -25,7 +26,7 @@ if (IS_DEV && process.env.ZYRA_BACKEND_PORT) {
 }
 
 app.whenReady().then(() => {
-    startBackend(AUTH_TOKEN, BACKEND_PORT, IS_DEV, IS_WIN);
+    startBackend(AUTH_TOKEN, BACKEND_PORT, IS_DEV, PLATFORM);
     createWindow(IS_DEV, AUTH_TOKEN);
 });
 
