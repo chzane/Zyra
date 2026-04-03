@@ -244,3 +244,6 @@ venv/
 .venv/
 
 logs
+
+# LLM Models
+llm/models
