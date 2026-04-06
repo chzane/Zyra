@@ -1,4 +1,4 @@
-from openai import OpenAI
+from openai import OpenAI, AuthenticationError, APIError
 from ..base_client import LLMClient
 from ..schema import ChatCompletionRequest
 
@@ -18,13 +18,25 @@ class OpenAIClient(LLMClient):
         
         :param request: ChatCompletionRequest
         :return: Response from the model
-        :return: str
+        :return: dict
+        :return_code: 200
+        :return_msg: "OK"
         """
                 
-        resp = self.client.chat.completions.create(
-            model=request.model_name,
-            messages=self.convert_messages_to_dicts(request.messages),
-            temperature=request.temperature,
-            stream=request.stream,
-        )
-        return resp
+        try:
+            resp = self.client.chat.completions.create(
+                model=request.model_name,
+                messages=self._convert_messages_to_dicts(request.messages),
+                temperature=request.temperature,
+                stream=request.stream,
+            )
+            return resp, True, "OK"
+
+        except AuthenticationError:
+            return None, False, "OpenAI API authentication error"
+
+        except APIError as e:
+            return None, False, f"OpenAI API error: {e}"
+
+        except Exception as e:
+            return None, False, f"Unexpected error: {e}"

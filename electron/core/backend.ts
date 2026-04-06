@@ -10,7 +10,7 @@ let backendProcess: any;
  * @param IS_DEV Whether the application is running in development mode.
  * @param PLATFORM The platform of the application running.
  */
-export function startBackend(AUTH_TOKEN: string, PORT: number, IS_DEV: boolean, PLATFORM: string) {
+export function startBackend(AUTH_TOKEN: string, PORT: number, IS_DEV: boolean, PLATFORM: string, APP_DATA_DIR: string) {
     if (IS_DEV) {
         let pythonPath: string;
         switch (PLATFORM) {
@@ -33,7 +33,8 @@ export function startBackend(AUTH_TOKEN: string, PORT: number, IS_DEV: boolean, 
             "backend/main.py",
             AUTH_TOKEN,
             PORT.toString(),
-            IS_DEV.toString()
+            IS_DEV.toString(),
+            APP_DATA_DIR
         ], {
             env: { ...process.env }
         });

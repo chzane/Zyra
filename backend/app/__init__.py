@@ -1,4 +1,5 @@
 from flask import Flask, request
+from werkzeug.exceptions import BadRequest
 from .core.auth import get_token
 from .utils.response import success, error
 
@@ -8,11 +9,15 @@ def create_app():
 
     from .routes.system import system_dp
     from .routes.chat import chat_dp
+    from .routes.llm import llm_dp
+    from .routes.model import model_dp
 
     app.register_blueprint(system_dp, url_prefix="/system")
     app.register_blueprint(chat_dp, url_prefix="/chat")
+    app.register_blueprint(llm_dp, url_prefix="/llm")
+    app.register_blueprint(model_dp, url_prefix="/model")
 
-    # handle_error(app)
+    # register_error_handlers(app)
     register_auth(app)
 
     return app
@@ -29,7 +34,10 @@ def register_auth(app):
         if not token or token != get_token():
             return error(code=401, message="Unauthorized"), 401
 
-def handle_error(app):
+def register_error_handlers(app):
+    @app.errorhandler(BadRequest)
+    def bad_request(_):
+        return error(code=400, message="Invalid JSON body. Please check JSON syntax."), 400
     
     @app.errorhandler(404)
     def not_found(e):

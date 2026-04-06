@@ -4,7 +4,7 @@ from .schema import ChatCompletionRequest, ChatMessage
 
 
 class LLMClient(ABC):
-    def __init__(self, api_key: str, api_baseurl: str = None) -> None:
+    def __init__(self, api_key: str, api_baseurl: str | None = None) -> None:
         self.api_key = api_key
         self.api_baseurl = api_baseurl
 
@@ -25,7 +25,7 @@ class LLMClient(ABC):
         
         pass
     
-    def convert_messages_to_dicts(self, messages: List[ChatMessage]) -> List[Dict[str, str]]:
+    def _convert_messages_to_dicts(self, messages: List[ChatMessage]) -> List[Dict[str, str]]:
         """
         Convert List[ChatMessage] to List[Dict[str, str]]
         """

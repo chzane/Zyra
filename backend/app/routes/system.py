@@ -1,8 +1,9 @@
-from flask import Blueprint, jsonify
-from app.utils.response import success, error
-from app.core.system import zyra_system_info
+from flask import Blueprint
+from app.utils.response import success
+from state.state_manager import get_state
 
 system_dp = Blueprint("system", __name__)
+state = get_state()
 
 
 @system_dp.route("/health", methods=["GET"])
@@ -28,4 +29,5 @@ def systemdp_info():
     :return_msg: "OK"
     :return_data: System info dictionary
     """
-    return success(data=zyra_system_info.to_dict())
+    state.system.refresh()
+    return success(data=state.system.to_dict())

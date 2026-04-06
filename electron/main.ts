@@ -6,11 +6,13 @@ import { registerIpcHandlers } from "./core/ipc";
 import { createWindow } from "./core/window";
 import { IS_DEV, PLATFORM } from "./config";
 import dotenv from "dotenv";
+import path from "path";
 
 dotenv.config();
 
 let AUTH_TOKEN: string;
 let BACKEND_PORT: number;
+let APP_DATA_DIR: string = path.join(app.getPath("userData"), "zyra_storage");
 
 let mainWindowRef: ReturnType<typeof createWindow> | null = null;
 
@@ -31,7 +33,8 @@ if (IS_DEV && process.env.ZYRA_BACKEND_PORT) {
 registerIpcHandlers(IS_DEV, () => mainWindowRef);
 
 app.whenReady().then(() => {
-    startBackend(AUTH_TOKEN, BACKEND_PORT, IS_DEV, PLATFORM);
+    startBackend(AUTH_TOKEN, BACKEND_PORT, IS_DEV, PLATFORM, APP_DATA_DIR);
+
     const mainWindow = createWindow(IS_DEV, AUTH_TOKEN);
     mainWindowRef = mainWindow;
 
