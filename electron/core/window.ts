@@ -1,4 +1,5 @@
 import { BrowserWindow, screen } from "electron";
+import { IS_WIN } from "../config";
 import path from "path";
 
 let mainWindow: BrowserWindow | null = null;
@@ -45,6 +46,7 @@ function getTopRightBounds(height: number) {
  */
 export function createWindow(IS_DEV: boolean, AUTH_TOKEN: string) {
     const initialBounds = getTopRightBounds(FLOAT_WINDOW_DEFAULT_HEIGHT);
+    const alwaysOnTopLevel = IS_WIN ? "screen-saver" : "normal";
 
     mainWindow = new BrowserWindow({
         ...initialBounds,
@@ -60,7 +62,7 @@ export function createWindow(IS_DEV: boolean, AUTH_TOKEN: string) {
         },
     });
 
-    mainWindow.setAlwaysOnTop(true, "screen-saver");
+    mainWindow.setAlwaysOnTop(true, alwaysOnTopLevel);
     mainWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
     mainWindow.on("closed", () => {
