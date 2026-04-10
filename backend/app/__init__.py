@@ -10,12 +10,10 @@ def create_app():
     from .routes.system import system_dp
     from .routes.chat import chat_dp
     from .routes.llm import llm_dp
-    from .routes.model import model_dp
 
     app.register_blueprint(system_dp, url_prefix="/system")
     app.register_blueprint(chat_dp, url_prefix="/chat")
     app.register_blueprint(llm_dp, url_prefix="/llm")
-    app.register_blueprint(model_dp, url_prefix="/model")
 
     # register_error_handlers(app)
     register_auth(app)

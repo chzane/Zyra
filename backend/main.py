@@ -22,11 +22,9 @@ if __name__ == "__main__":
 
     config_dir = app_data_dir / "configs"
     state_dir = app_data_dir / "state"
-    model_dir = app_data_dir / "models"
 
     config_dir.mkdir(parents=True, exist_ok=True)
     state_dir.mkdir(parents=True, exist_ok=True)
-    model_dir.mkdir(parents=True, exist_ok=True)
 
     config.config_dir = config_dir
     state.state_dir = state_dir
@@ -37,7 +35,6 @@ if __name__ == "__main__":
     state.load_or_create(state_file)
 
     config.config_dir = Path(config_dir)
-    config.local_model.model_dir = model_dir
     config.server.port = port
     config.app.is_dev = is_dev
     state.auth.auth_token = token

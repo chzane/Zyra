@@ -6,7 +6,6 @@ from pydantic_settings import BaseSettings
 
 from .items.app_config import AppConfig
 from .items.llm_config import LLMConfig
-from .items.local_model_config import LocalModelConfig
 from .items.server_config import ServerConfig
 
 from .base_config import ZyraBaseConfig
@@ -14,7 +13,6 @@ from .base_config import ZyraBaseConfig
 class ZyraConfig(ZyraBaseConfig, BaseSettings):
     app: AppConfig = AppConfig()
     llm: LLMConfig = LLMConfig()
-    local_model: LocalModelConfig = LocalModelConfig()
     server: ServerConfig = ServerConfig()
     
     _env_file: Path | None = None
