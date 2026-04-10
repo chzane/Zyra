@@ -52,6 +52,7 @@ export function createWindow(IS_DEV: boolean, AUTH_TOKEN: string) {
         ...initialBounds,
         show: false,
         frame: false,
+        hasShadow: false,
         alwaysOnTop: true,
         transparent: true,
         resizable: false,
@@ -62,7 +63,7 @@ export function createWindow(IS_DEV: boolean, AUTH_TOKEN: string) {
         },
     });
 
-    mainWindow.setAlwaysOnTop(true, alwaysOnTopLevel);
+    mainWindow.setAlwaysOnTop(true, "floating");
     mainWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
     mainWindow.on("closed", () => {
