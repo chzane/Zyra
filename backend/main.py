@@ -1,5 +1,6 @@
 import sys
 from app import create_app
+from app.core.history_store import get_history_store
 from config import ZyraConfig
 from config.config_manager import get_config
 from pathlib import Path
@@ -21,18 +22,16 @@ if __name__ == "__main__":
     app_data_dir = Path(sys.argv[4])
 
     config_dir = app_data_dir / "configs"
-    state_dir = app_data_dir / "state"
+    history_dir = app_data_dir / "history"
 
     config_dir.mkdir(parents=True, exist_ok=True)
-    state_dir.mkdir(parents=True, exist_ok=True)
+    history_dir.mkdir(parents=True, exist_ok=True)
 
     config.config_dir = config_dir
-    state.state_dir = state_dir
 
     config_file = config_dir / "config.json"
-    state_file = state_dir / "state.json"
     config.load_or_create(config_file)
-    state.load_or_create(state_file)
+    get_history_store().set_history_dir(history_dir)
 
     config.config_dir = Path(config_dir)
     config.server.port = port
@@ -40,7 +39,6 @@ if __name__ == "__main__":
     state.auth.auth_token = token
     state.system.refresh()
     config.save(config_file)
-    state.save(state_file)
 
     app = create_app()
 

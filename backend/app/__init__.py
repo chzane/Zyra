@@ -9,10 +9,12 @@ def create_app():
 
     from .routes.system import system_dp
     from .routes.chat import chat_dp
+    from .routes.history import history_dp
     from .routes.llm import llm_dp
 
     app.register_blueprint(system_dp, url_prefix="/system")
     app.register_blueprint(chat_dp, url_prefix="/chat")
+    app.register_blueprint(history_dp, url_prefix="/history")
     app.register_blueprint(llm_dp, url_prefix="/llm")
 
     # register_error_handlers(app)
