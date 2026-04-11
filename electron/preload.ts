@@ -2,7 +2,9 @@ import { contextBridge, ipcRenderer, webUtils } from "electron";
 
 const api = {
     getAppInfo: () => ipcRenderer.invoke("app:get-info") as Promise<{
+        name: string;
         version: string;
+        gitRepository: string;
         platform: string;
         isDev: boolean;
     }>,

@@ -1,6 +1,6 @@
 {
   "name": "zyra",
-  "version": "1.0.0beta",
+  "version": "v1.0.0beta",
   "description": "A personal AI assistant.",
   "main": "dist/electron/main.js",
   "scripts": {

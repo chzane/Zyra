@@ -1,5 +1,7 @@
 type ZyraAppInfo = {
+    name: string;
     version: string;
+    gitRepository: string;
     platform: string;
     isDev: boolean;
 };

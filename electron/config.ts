@@ -1,5 +1,9 @@
 import { app } from "electron";
 
+export const APP_NAME: string = "Zyra";
+export const APP_VERSION: string = app.getVersion();
+export const APP_GIT_REPOSITORY: string = "https://github.com/chzane/Zyra";
+
 export const IS_DEV: boolean = !app.isPackaged;
 
 export const PLATFORM: string = process.platform;

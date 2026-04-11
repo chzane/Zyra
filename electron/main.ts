@@ -3,7 +3,7 @@ import log from "./core/logger";
 import { createAuthToken } from "./core/auth";
 import { startBackend, stopBackend, randomPort } from "./core/backend";
 import { registerIpcHandlers } from "./core/ipc";
-import { createWindow, showSettingsWindow } from "./core/window";
+import { createWindow, markWindowsQuitting, preloadSettingsWindow, showSettingsWindow } from "./core/window";
 import { createTray, destroyTray } from "./core/tray";
 import { IS_DEV, PLATFORM } from "./config";
 import dotenv from "dotenv";
@@ -58,10 +58,27 @@ if (IS_DEV && process.env.ZYRA_BACKEND_PORT) {
 registerIpcHandlers(IS_DEV, () => mainWindowRef);
 
 app.whenReady().then(() => {
-    startBackend(AUTH_TOKEN, BACKEND_PORT, IS_DEV, PLATFORM, APP_DATA_DIR);
-
     const mainWindow = createWindow(IS_DEV, AUTH_TOKEN);
     mainWindowRef = mainWindow;
+
+    let settingsPreloaded = false;
+    const runPreloadSettings = () => {
+        if (settingsPreloaded) {
+            return;
+        }
+        settingsPreloaded = true;
+        preloadSettingsWindow(IS_DEV, AUTH_TOKEN);
+    };
+
+    mainWindow.webContents.once("did-finish-load", () => {
+        runPreloadSettings();
+    });
+
+    setTimeout(() => {
+        runPreloadSettings();
+    }, 1500);
+
+    startBackend(AUTH_TOKEN, BACKEND_PORT, IS_DEV, PLATFORM, APP_DATA_DIR);
     createTray(() => mainWindowRef, {
         openSettings: () => {
             showSettingsWindow(IS_DEV, AUTH_TOKEN);
@@ -83,6 +100,7 @@ app.whenReady().then(() => {
 });
 
 app.on("will-quit", () => {
+    markWindowsQuitting();
     globalShortcut.unregisterAll();
     destroyTray();
     mainWindowRef = null;

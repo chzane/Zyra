@@ -4,6 +4,7 @@ import path from "path";
 
 let mainWindow: BrowserWindow | null = null;
 let settingsWindow: BrowserWindow | null = null;
+let isQuitting = false;
 
 const FLOAT_WINDOW_WIDTH = 420;
 const FLOAT_WINDOW_DEFAULT_HEIGHT = 220;
@@ -60,6 +61,7 @@ export function createWindow(IS_DEV: boolean, AUTH_TOKEN: string) {
         skipTaskbar: true,
         webPreferences: {
             preload: path.join(__dirname, "../preload.js"),
+            backgroundThrottling: false,
         },
     });
 
@@ -83,10 +85,8 @@ export function createWindow(IS_DEV: boolean, AUTH_TOKEN: string) {
     return mainWindow;
 }
 
-export function showSettingsWindow(IS_DEV: boolean, AUTH_TOKEN: string) {
+function ensureSettingsWindow(IS_DEV: boolean, AUTH_TOKEN: string) {
     if (settingsWindow) {
-        settingsWindow.show();
-        settingsWindow.focus();
         return settingsWindow;
     }
 
@@ -112,7 +112,16 @@ export function showSettingsWindow(IS_DEV: boolean, AUTH_TOKEN: string) {
         maximizable: false,
         webPreferences: {
             preload: path.join(__dirname, "../preload.js"),
+            backgroundThrottling: false,
         },
+    });
+
+    settingsWindow.on("close", (event) => {
+        if (isQuitting) {
+            return;
+        }
+        event.preventDefault();
+        settingsWindow?.hide();
     });
 
     settingsWindow.on("closed", () => {
@@ -124,14 +133,27 @@ export function showSettingsWindow(IS_DEV: boolean, AUTH_TOKEN: string) {
     });
 
     if (IS_DEV) {
-        settingsWindow.loadURL("http://localhost:5173/#/settings");
+        void settingsWindow.loadURL("http://localhost:5173/#/settings");
     } else {
-        settingsWindow.loadFile("dist/frontend/index.html", { hash: "/settings" });
+        void settingsWindow.loadFile("dist/frontend/index.html", { hash: "/settings" });
     }
 
-    settingsWindow.show();
-    settingsWindow.focus();
     return settingsWindow;
+}
+
+export function preloadSettingsWindow(IS_DEV: boolean, AUTH_TOKEN: string) {
+    ensureSettingsWindow(IS_DEV, AUTH_TOKEN);
+}
+
+export function showSettingsWindow(IS_DEV: boolean, AUTH_TOKEN: string) {
+    const window = ensureSettingsWindow(IS_DEV, AUTH_TOKEN);
+    window.show();
+    window.focus();
+    return window;
+}
+
+export function markWindowsQuitting() {
+    isQuitting = true;
 }
 
 /**

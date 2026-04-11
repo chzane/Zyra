@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-
-const ZYRA_LOGO = "/icon/logo.png";
+import { AboutSection } from "./AboutSection";
 
 export type SettingsSectionId = "general" | "appearance" | "about";
 
@@ -104,15 +103,7 @@ export const SETTINGS_SECTIONS: SettingsSection[] = [
         title: "关于",
         icon: null,
         render: () => {
-            return (
-                <div className="settings-section">
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%" }}>
-                        <img src={ZYRA_LOGO} alt="Zyra" style={{ width: 80, height: 80 }} />
-                        <div style={{ marginTop: 12, fontSize: 26, color: "#000000ff", fontWeight: "bold" }}>Zyra</div>
-                        <div style={{ marginTop: 2, fontSize: 14, color: "#414141ff" }}>v1.0.0</div>
-                    </div>
-                </div>
-            );
+            return <AboutSection />;
         },
     }
 ];

@@ -1,7 +1,7 @@
 import { app, BrowserWindow, dialog, ipcMain, shell } from "electron";
 import { setAssistantWindowHeight } from "./window";
 import { confirmHideAssistantWindow } from "../main";
-import { IS_MAC, IS_WIN } from "../config";
+import { APP_NAME, APP_VERSION, APP_GIT_REPOSITORY, IS_MAC, IS_WIN } from "../config";
 
 type GetMainWindow = () => BrowserWindow | null;
 
@@ -12,7 +12,9 @@ export function registerIpcHandlers(IS_DEV: boolean, getMainWindow: GetMainWindo
      */
     ipcMain.handle("app:get-info", () => {
         return {
-            version: app.getVersion(),
+            name: APP_NAME,
+            version: APP_VERSION,   
+            gitRepository: APP_GIT_REPOSITORY,
             platform: process.platform,
             isDev: IS_DEV,
         };
