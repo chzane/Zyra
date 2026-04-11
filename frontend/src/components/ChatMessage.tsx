@@ -10,7 +10,7 @@ export function ChatMessage({ item }: ChatMessageProps) {
     const baseClasses = "message-bubble";
     const roleClass = isAssistant ? "message-assistant glass-card" : "message-user";
     const pendingClass = item.pending ? "message-pending" : "";
-    
+
     const [renderedChars, setRenderedChars] = useState<string[]>([]);
 
     useEffect(() => {
@@ -39,15 +39,18 @@ export function ChatMessage({ item }: ChatMessageProps) {
             {item.pending ? (
                 <div className="assistant-wave" />
             ) : (
-                <span>
-                    {isAssistant
-                        ? renderedChars.map((char, index) => (
-                              <span key={index} className="typing-char">
-                                  {char}
-                              </span>
-                          ))
-                        : item.text}
-                </span>
+                <>
+                    <div className="message-content">
+                        {isAssistant
+                            ? renderedChars.map((char, index) => (
+                                  <span key={index} className="typing-char">
+                                      {char}
+                                  </span>
+                              ))
+                            : item.text}
+                    </div>
+                    {isAssistant && <div className="message-meta">模型：— · Tokens：—</div>}
+                </>
             )}
         </div>
     );

@@ -43,7 +43,7 @@ export function AboutSection() {
                     <img src="/icon/logo.png" alt="Zyra" style={{ width: 80, height: 80 }} />
                     <div style={{ marginTop: 12, fontSize: 26, color: "#000000ff", fontWeight: "bold" }}>Zyra</div>
                     <div style={{ marginTop: 2, fontSize: 14, color: "#414141d1" }}>{info?.version ?? ""}</div>
-                    <div style={{ marginTop: 18, fontSize: 14, color: "#414141d1" }}>Made with love ❤️</div>
+                    <div style={{ marginTop: 18, fontSize: 14, color: "#414141d1" }}>Made with love ❤️ by Zane</div>
                 </div>
             </div>
             {info?.gitRepository && (

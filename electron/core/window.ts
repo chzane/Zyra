@@ -7,8 +7,8 @@ let settingsWindow: BrowserWindow | null = null;
 let isQuitting = false;
 
 const FLOAT_WINDOW_WIDTH = 420;
-const FLOAT_WINDOW_DEFAULT_HEIGHT = 220;
-const FLOAT_WINDOW_MIN_HEIGHT = 180;
+const FLOAT_WINDOW_DEFAULT_HEIGHT = 80;
+const FLOAT_WINDOW_MIN_HEIGHT = 80;
 const FLOAT_WINDOW_MAX_HEIGHT = 760;
 const FLOAT_WINDOW_MARGIN_TOP = 16;
 const FLOAT_WINDOW_MARGIN_RIGHT = 16;
@@ -64,6 +64,8 @@ export function createWindow(IS_DEV: boolean, AUTH_TOKEN: string) {
             backgroundThrottling: false,
         },
     });
+
+    mainWindow.setIgnoreMouseEvents(true, { forward: true });
 
     mainWindow.setAlwaysOnTop(true, "floating");
     mainWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });

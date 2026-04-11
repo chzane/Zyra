@@ -75,6 +75,13 @@ export function registerIpcHandlers(IS_DEV: boolean, getMainWindow: GetMainWindo
         return true;
     });
 
+    ipcMain.on("window:set-ignore-mouse-events", (event, ignore: boolean, options?: { forward?: boolean }) => {
+        const mainWindow = getMainWindow();
+        if (mainWindow && event.sender === mainWindow.webContents) {
+            mainWindow.setIgnoreMouseEvents(ignore, options);
+        }
+    });
+
     /**
      * Send chat message
      */

@@ -11,6 +11,7 @@ const api = {
     showWindow: () => ipcRenderer.invoke("window:show") as Promise<boolean>,
     toggleWindow: () => ipcRenderer.invoke("window:toggle") as Promise<boolean>,
     setWindowHeight: (height: number) => ipcRenderer.invoke("window:set-height", height) as Promise<boolean>,
+    setIgnoreMouseEvents: (ignore: boolean, options?: { forward?: boolean }) => ipcRenderer.send("window:set-ignore-mouse-events", ignore, options),
     sendMessage: (payload: { message: string; fileNames?: string[] }) =>
         ipcRenderer.invoke("chat:send-message", payload) as Promise<{ text: string }>,
     pickFiles: () => ipcRenderer.invoke("file:pick") as Promise<string[]>,

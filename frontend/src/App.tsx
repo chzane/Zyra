@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { ChangeEvent, DragEvent } from "react";
 import { BadgePill } from "./components/BadgePill";
 import { ChatMessage } from "./components/ChatMessage";
@@ -23,6 +23,24 @@ function AssistantApp() {
         [messages]
     );
 
+    const assistantPanelRef = useRef<HTMLDivElement | null>(null);
+    const heightRafRef = useRef<number | null>(null);
+
+    const updateWindowHeight = () => {
+        const textarea = inputRef.current;
+        const panel = assistantPanelRef.current;
+        if (!textarea || !panel) {
+            return;
+        }
+
+        textarea.style.height = "auto";
+        const clampedHeight = Math.min(textarea.scrollHeight, 82);
+        textarea.style.height = `${clampedHeight}px`;
+
+        const desiredHeight = Math.min(760, Math.max(80, panel.scrollHeight + 28));
+        void window.zyra.setWindowHeight(desiredHeight);
+    };
+
     useEffect(() => {
         const focusInput = () => {
             inputRef.current?.focus();
@@ -33,11 +51,17 @@ function AssistantApp() {
             setInputValue("");
             setShowAnimation(false);
             setIsHiding(false);
+
+            void window.zyra.setWindowHeight(80);
         });
         const unsubscribeShow = window.zyra.onWindowShown(() => {
             setShowAnimation(true);
             setIsHiding(false);
         });
+        
+        // Let the backend know to make the window mouse transparent initially
+        window.zyra.setIgnoreMouseEvents(true, { forward: true });
+
         const unsubscribeHideReq = window.zyra.onWindowHideRequest(() => {
             setIsHiding(true);
             setTimeout(() => {
@@ -55,14 +79,40 @@ function AssistantApp() {
         };
     }, []);
 
+    useLayoutEffect(() => {
+        updateWindowHeight();
+    }, [badges.length, inputValue, previewMessages]);
+
     useEffect(() => {
-        const lines = Math.max(2, inputValue.split("\n").length);
-        const desiredHeight = Math.min(
-            760,
-            180 + previewMessages.length * 58 + badges.length * 28 + lines * 14
-        );
-        void window.zyra.setWindowHeight(desiredHeight);
-    }, [badges.length, inputValue, previewMessages.length]);
+        const panel = assistantPanelRef.current;
+        if (!panel) {
+            return;
+        }
+
+        const schedule = () => {
+            if (heightRafRef.current !== null) {
+                return;
+            }
+            heightRafRef.current = window.requestAnimationFrame(() => {
+                heightRafRef.current = null;
+                updateWindowHeight();
+            });
+        };
+
+        const observer = new MutationObserver(() => {
+            schedule();
+        });
+        observer.observe(panel, { subtree: true, childList: true, characterData: true });
+        schedule();
+
+        return () => {
+            observer.disconnect();
+            if (heightRafRef.current !== null) {
+                window.cancelAnimationFrame(heightRafRef.current);
+                heightRafRef.current = null;
+            }
+        };
+    }, []);
 
     const addFileBadge = (filePath: string) => {
         const name = filePath.split(/[/\\]/).pop() || filePath;
@@ -154,7 +204,18 @@ function AssistantApp() {
 
     return (
         <div className={`assistant-shell ${showAnimation && !isHiding ? "animate-show" : ""} ${isHiding ? "animate-hide" : ""}`} onDragOver={(event) => event.preventDefault()} onDrop={handleDrop}>
-            <div className="assistant-panel">
+            <div
+                className="assistant-panel"
+                ref={assistantPanelRef}
+                onMouseEnter={() => {
+                    // Enable clicks when hovering over interactive elements
+                    window.zyra.setIgnoreMouseEvents(false);
+                }}
+                onMouseLeave={() => {
+                    // Pass clicks through when mouse leaves the interactive area
+                    window.zyra.setIgnoreMouseEvents(true, { forward: true });
+                }}
+            >
                 <div className="input-row glass-card">
                     <textarea
                         ref={inputRef}
