@@ -2,10 +2,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { ChangeEvent, DragEvent } from "react";
 import { BadgePill } from "./components/BadgePill";
 import { ChatMessage } from "./components/ChatMessage";
+import { SettingsApp } from "./settings/SettingsApp";
 import type { BadgeItem, ChatMessageItem } from "./types";
 import { compactText, createId, ellipsis } from "./utils";
 
-function App() {
+function AssistantApp() {
     const [inputValue, setInputValue] = useState("");
     const [messages, setMessages] = useState<ChatMessageItem[]>([]);
     const [badges, setBadges] = useState<BadgeItem[]>([]);
@@ -202,6 +203,13 @@ function App() {
             </div>
         </div>
     );
+}
+
+function App() {
+    if (window.location.hash === "#/settings") {
+        return <SettingsApp />;
+    }
+    return <AssistantApp />;
 }
 
 export default App;

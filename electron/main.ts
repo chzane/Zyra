@@ -3,7 +3,7 @@ import log from "./core/logger";
 import { createAuthToken } from "./core/auth";
 import { startBackend, stopBackend, randomPort } from "./core/backend";
 import { registerIpcHandlers } from "./core/ipc";
-import { createWindow } from "./core/window";
+import { createWindow, showSettingsWindow } from "./core/window";
 import { createTray, destroyTray } from "./core/tray";
 import { IS_DEV, PLATFORM } from "./config";
 import dotenv from "dotenv";
@@ -63,10 +63,9 @@ app.whenReady().then(() => {
     const mainWindow = createWindow(IS_DEV, AUTH_TOKEN);
     mainWindowRef = mainWindow;
     createTray(() => mainWindowRef, {
-        showWindow: () => {
-            void showAssistantWindow();
+        openSettings: () => {
+            showSettingsWindow(IS_DEV, AUTH_TOKEN);
         },
-        hideWindow: hideAssistantWindow,
     });
 
     const shortcut = "CommandOrControl+Escape";

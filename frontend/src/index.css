@@ -19,6 +19,182 @@ body {
     height: 100%;
 }
 
+.settings-shell {
+    width: 100%;
+    height: 100%;
+    background: rgb(255, 255, 255);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 12px;
+    -webkit-app-region: drag;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+}
+
+.settings-layout {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 16px;
+}
+
+.settings-nav {
+    width: 220px;
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    -webkit-app-region: no-drag;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 20px;
+    padding: 16px 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05), inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.settings-nav-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    padding-left: 8px;
+    color: #1f1d2b;
+}
+
+.settings-nav-item {
+    border: 1px solid transparent;
+    background: transparent;
+    text-align: left;
+    padding: 10px 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 13px;
+    color: rgba(31, 29, 43, 0.8);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    -webkit-app-region: no-drag;
+}
+
+.settings-nav-item svg {
+    width: 18px;
+    height: 18px;
+    opacity: 0.8;
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+}
+
+.settings-nav-item:hover {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 12px 16px;
+    margin: -2px -2px;
+    color: rgba(31, 29, 43, 1);
+    box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.6), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.4), 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.settings-nav-item:hover svg {
+    opacity: 1;
+    transform: scale(0.95);
+}
+
+.settings-nav-item.active {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    color: #1f1d2b;
+    font-weight: 600;
+    box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.8), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5), 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.settings-nav-item.active svg {
+    opacity: 1;
+    color: #0894ff;
+}
+
+.settings-nav-spacer {
+    flex: 1;
+}
+
+.settings-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+    -webkit-app-region: no-drag;
+}
+
+.settings-content-title {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    -webkit-app-region: drag;
+}
+
+.settings-section {
+    width: 100%;
+}
+
+.settings-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.settings-label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.settings-switch {
+    position: relative;
+    width: 42px;
+    height: 24px;
+    display: inline-block;
+}
+
+.settings-switch input {
+    display: none;
+}
+
+.settings-slider {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.12);
+    transition: background 0.2s ease;
+}
+
+.settings-slider::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease;
+}
+
+.settings-switch input:checked + .settings-slider {
+    background: rgba(8, 148, 255, 0.45);
+}
+
+.settings-switch input:checked + .settings-slider::after {
+    transform: translateX(18px);
+}
+
 .assistant-shell {
     width: 100%;
     height: 100%;
@@ -71,6 +247,43 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.settings-glass-card {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 20px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.092), inset 2px 2px 1px 0 rgba(255, 255, 255, 0.6), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.4);
+    border: 1px solid transparent;
+    padding: 13px 17px;
+    animation: fade-up 420ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+}
+
+.settings-glass-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), inset 2px 2px 1px 0 rgba(255, 255, 255, 0.8), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.settings-glass-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 14px;
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.05), inset -1px -1px 2px rgba(255, 255, 255, 0.4);
+    border: 1px solid transparent;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #1f1d2b;
+    outline: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+}
+
+.settings-glass-input:focus {
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.7), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5), 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .glass-card {
